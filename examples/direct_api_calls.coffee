@@ -8,7 +8,7 @@ etsyjs = require('../lib/etsyjs')
 
 # nconf reads in config values from json file
 nconf.argv().env()
-nconf.file({ file: './examples/config.json' })
+nconf.file({ file: './config.json' })
 
 # instantiate client with key and secret and set callback url
 client = etsyjs.client
@@ -32,7 +32,7 @@ app.get '/', (req, res) ->
       res.redirect response.loginUrl
   else
     # else if we have OAuth credentials for this session then use them
-    client.auth(oauthSession.token, oauthSession.secret).get '/users/etsyjs', {}, (err, status, body, headers) ->
+    client.auth(oauthSession.token, oauthSession.secret).get '/users/hnbulz1l', {}, (err, status, body, headers) ->
       console.log err if err
       console.dir(body) if body
       res.send body.results[0] if body
@@ -40,19 +40,35 @@ app.get '/', (req, res) ->
 app.get '/shop', (req, res) ->
   oauthSession = {token: req.session.token, secret: req.session.sec}
   console.log("fetching a shop...")
-  client.auth(oauthSession.token, oauthSession.secret).get '/shops/ParisienneLuxe', {}, (err, status, body, headers) ->
-    console.log err if err
-    console.dir(body) if body
-    res.send body.results[0].shop_name if body
-
-app.get '/update', (req, res) ->
-  oauthSession = {token: req.session.token, secret: req.session.sec}
-  console.log("updating profile...")
-  updatedProfile = {user_id: "etsyjs", city: "New York City"}
-  client.auth(oauthSession.token, oauthSession.secret).put "/users/etsyjs/profile", updatedProfile, (err, status, body, headers) ->
+  client.auth(oauthSession.token, oauthSession.secret).get '/shops/CustomGiftWear', {}, (err, status, body, headers) ->
     console.log err if err
     console.dir(body) if body
     res.send body.results[0] if body
+
+app.get '/shop/transactions', (req, res) ->
+  oauthSession = {token: req.session.token, secret: req.session.sec}
+  console.log("fetching a shop...")
+  client.auth(oauthSession.token, oauthSession.secret).get '/shops/CustomGiftWear/transactions', {}, (err, status, body, headers) ->
+    console.log err if err
+    console.dir(body) if body
+    res.send body.results if body
+
+app.get '/shop/receipts', (req, res) ->
+  oauthSession = {token: req.session.token, secret: req.session.sec}
+  console.log("fetching a shop...")
+  client.auth(oauthSession.token, oauthSession.secret).get '/shops/CustomGiftWear/receipts', {}, (err, status, body, headers) ->
+    console.log err if err
+    console.dir(body) if body
+    res.send body.results if body
+
+# app.get '/update', (req, res) ->
+#   oauthSession = {token: req.session.token, secret: req.session.sec}
+#   console.log("updating profile...")
+#   updatedProfile = {user_id: "etsyjs", city: "New York City"}
+#   client.auth(oauthSession.token, oauthSession.secret).put "/users/etsyjs/profile", updatedProfile, (err, status, body, headers) ->
+#     console.log err if err
+#     console.dir(body) if body
+#     res.send body.results[0] if body
 
 app.get '/authorise', (req, res) ->
   # parse the query string for OAuth verifier

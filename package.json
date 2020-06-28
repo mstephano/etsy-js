@@ -2,12 +2,14 @@
   "name": "etsy-js",
   "description": "An asynchronous nodejs wrapper for the etsy v2 api.",
   "version": "0.0.6",
-  "main": "./lib/etsyjs",
+  "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:GeorgiCodes/etsy-js.git"
+    "url": "https://github.com/mstephano/etsy-js.git"
   },
-  "scripts": {},
+  "scripts": {
+    "start": "cd examples && node app.js"
+  },
   "dependencies": {
     "coffee-script": "1.7.x",
     "oauth": "0.9.x",
